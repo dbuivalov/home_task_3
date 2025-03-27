@@ -1,71 +1,23 @@
 package org.example;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         String link = "https://skillbox.ru";
 
-        String link2 = "https://skillbox.ru/code/";
+        long timer = System.currentTimeMillis();
 
-        List<String> links = new ArrayList<>();
+        System.out.println(new ForkJoinPool().invoke(new ProfessionsGetter(link)));
 
-        try {
-            Document doc = Jsoup.connect(link).get();
+//        Professions professions = new Professions(link);
+//        professions.getLinks().stream().map(professions::getProfessions).forEach(System.out::println);
 
-            Document doc2 = Jsoup.connect(link2).get();
+        long programTime = System.currentTimeMillis() - timer;
 
-
-
-
-            Element element = doc.getElementsByClass("ui-footer-nav-list__links").first();
-
-            Elements elements2 = element.getElementsByAttribute("href");
-
-            elements2.forEach(e -> links.add(link + e.attr("href")));
-
-
-
-
-            Elements elements = doc2.getElementsByClass("ui-product-card-main__wrap");
-
-            elements.forEach(e -> System.out.println(e.attr("href")));
-
-
-
-
-
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-//        links.forEach(System.out::println);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        System.out.println("\nВремя исполнения программы: " + programTime);
     }
 }
